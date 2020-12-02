@@ -1,3 +1,8 @@
+
+library(reticulate)
+use_python("/home/toolkit/local/bin/python3",required=T)
+py_config()
+
 source('/home/zhangfeng/project/EVOL/source/MultiTools.R')
 
 setwd('/home/zhangfeng/project/hTSC/data/hTSC_paper_RNA_seq/htseq_count')
@@ -10,14 +15,6 @@ MAT[1:5,1:5]
 
 GRP=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/KEGG_Ribosome.txt',sep='\t')[,1])
 GCC=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/KEGG_CellCycle.txt',sep='\t')[,1])
-
-
-
-
-library(reticulate)
-use_python("/home/toolkit/local/bin/python3",required=T)
-py_config()
-
 
 
 pbmc <- CreateSeuratObject(counts = MAT,  project = "hTSC", min.cells = 0, min.features = 0)
