@@ -34,14 +34,8 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor 
 pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
 #VariableFeaturePlot(pbmc)
 all.genes <- rownames(pbmc)
-#pbmc <- ScaleData(pbmc, features = all.genes)
 pbmc <- ScaleData(pbmc, features = all.genes, vars.to.regress=c('cc','rp'))
-#pbmc <- ScaleData(pbmc, features = VariableFeatures(pbmc))
-#pbmc <- RunPCA(pbmc, features = all.genes, npcs = 50)
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), npcs = 50)
-#ElbowPlot(pbmc, ndims=50)
-#pbmc <- RunUMAP(pbmc, dims = 1:30,min.dist=0.3,n.neighbors=10)
-#DimPlot(pbmc, reduction = "umap")
 
 DimPlot(pbmc, reduction = "pca")
 saveRDS(pbmc, file='pbmc.rds')
@@ -55,3 +49,81 @@ DimPlot(pbmc, reduction = "pca")+ NoLegend()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############
+pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
+pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
+#VariableFeaturePlot(pbmc)
+all.genes <- rownames(pbmc)
+#pbmc <- ScaleData(pbmc, features = all.genes)
+pbmc <- ScaleData(pbmc, features = all.genes, vars.to.regress=c('cc','rp'))
+#pbmc <- ScaleData(pbmc, features = VariableFeatures(pbmc))
+#pbmc <- RunPCA(pbmc, features = all.genes, npcs = 50)
+pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), npcs = 50)
+#ElbowPlot(pbmc, ndims=50)
+#pbmc <- RunUMAP(pbmc, dims = 1:30,min.dist=0.3,n.neighbors=10)
+#DimPlot(pbmc, reduction = "umap")
