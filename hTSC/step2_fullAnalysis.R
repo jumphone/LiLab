@@ -31,10 +31,11 @@ pbmc[['rp']]=SRP
 ######################
 
 pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
-pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
-#VariableFeaturePlot(pbmc)
 all.genes <- rownames(pbmc)
 pbmc <- ScaleData(pbmc, features = all.genes, vars.to.regress=c('cc','rp'))
+
+pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
+#VariableFeaturePlot(pbmc)
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), npcs = 50)
 
 DimPlot(pbmc, reduction = "pca")
