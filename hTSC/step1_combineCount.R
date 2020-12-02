@@ -43,7 +43,7 @@ NEW.COL_NAME=c(
   'CT_second',  'EVT_TSCT27', 'NA_CT27-P11',
   'ST_TSCT27-2D', 'NA_CT27-ST-3D', 'EVT_TSCT29',
   'NA_CT29-P13', 'NA_CT29-ST-3D', 'Stroma_endometrium_3',
-  'StromaEndometrium_4', 'NA_ES8P74-WTD3','CT_term-1-1',
+  'Stroma_endometrium_4', 'NA_ES8P74-WTD3','CT_term-1-1',
    'CT_term-1-2','CT_term-2-1','CT_term-2-2',
   'CT_first-1-1','CT_first-1-2','CT_first-2-1',
   'CT_first-2-2','CT_second-1','CT_second-2',
