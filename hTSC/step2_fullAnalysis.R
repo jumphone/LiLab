@@ -29,6 +29,35 @@ pbmc <- ScaleData(pbmc, features =all.genes)
 pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
 DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #################################################
 #Batch correction
 BATCH=rep('B1',ncol(MAT))
