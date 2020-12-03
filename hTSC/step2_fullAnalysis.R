@@ -17,21 +17,62 @@ PCGENE=read.table('/home/database/annotation/hg19/Homo_sapiens.GRCh37.75.chr.pc.
 MAT=MAT[which(rownames(MAT) %in% PCGENE[,4]),]
 MAT[1:5,1:5]
 
-##############
-GRP=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/KEGG_Ribosome.txt',sep='\t')[,1])
-GCC1=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/G1S.txt',sep='\t')[,1])
-GCC2=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/G2M.txt',sep='\t')[,1])
 
 ##############
 pbmc <- CreateSeuratObject(counts = MAT,  project = "hTSC", min.cells = 0, min.features = 0)
 pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
 
 ##
-#Use All Genes
+#Use All Genes 
 all.genes <- rownames(pbmc)
 pbmc <- ScaleData(pbmc, features =all.genes)
 pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
 DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
+
+#################################################
+#Batch correction
+BATCH=rep('B1',ncol(MAT))
+BATCH[which(Idents(pbmc)=='NA')]='B2'
+COUNT=as.matrix(pbmc@assays$RNA@counts)
+VAR1=apply(COUNT[,which(BATCH=='B1')],1,var)
+VAR2=apply(COUNT[,which(BATCH=='B2')],1,var)
+used_col=which(VAR1*VAR2>0)
+USED.COUNT=COUNT[used_col,]
+MAT=USED.COUNT
+pbmc <- CreateSeuratObject(counts = MAT,  project = "hTSC", min.cells = 0, min.features = 0)
+pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
+###############
+DATA=as.matrix(pbmc@assays$RNA@data)
+C.DATA=.combat(DATA,BATCH)
+C.DATA[which(C.DATA<0)]=0
+###############################
+pbmc@assays$RNA@data=C.DATA
+all.genes <- rownames(pbmc)
+pbmc <- ScaleData(pbmc, features =all.genes)
+pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
+DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##
 #Use Variable Genes
@@ -45,6 +86,10 @@ write.table(pbmc@meta.data, file='META.txt',row.names=T,col.names=T,quote=F,sep=
 
 
 
+##############
+GRP=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/KEGG_Ribosome.txt',sep='\t')[,1])
+GCC1=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/G1S.txt',sep='\t')[,1])
+GCC2=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/G2M.txt',sep='\t')[,1])
 
 
 ###################
