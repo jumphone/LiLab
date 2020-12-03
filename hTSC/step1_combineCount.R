@@ -40,29 +40,53 @@ write.table(MAT, file='MAT_ORI.NAME.txt',sep='\t',quote=F,row.names=TRUE, col.na
 colnames(MAT)
 
 NEW.COL_NAME=c(
-  'CT_second',  'EVT_TSCT27', 'NA_CT27-P11',
-  'ST_TSCT27-2D', 'NA_CT27-ST-3D', 'EVT_TSCT29',
-  'NA_CT29-P13', 'NA_CT29-ST-3D', 'Stroma_endometrium_3',
-  'Stroma_endometrium_4', 'NA_ES8P74-WTD3','CT_term-1-1',
+  'CT_second',  'EVT_TSCT27', 'CT_CT27-P11',
+  'ST_TSCT27-2D', 'ST_CT27-ST-3D', 'EVT_TSCT29',
+  'CT_CT29-P13', 'ST_CT29-ST-3D', 'Stroma_endometrium_3',
+  'Stroma_endometrium_4', 'NA_WT-ES8P74-D3','CT_term-1-1',
    'CT_term-1-2','CT_term-2-1','CT_term-2-2',
   'CT_first-1-1','CT_first-1-2','CT_first-2-1',
   'CT_first-2-2','CT_second-1','CT_second-2',
   'CT_first-1','CT_first-2','Epi_secretory-1',
   'Epi_secretory-2','Epi_follicula-2','Stroma_endometrium-1',
    'Stroma_endometrium-2','CT_first-3-1','CT_first-3-2',
-  'EVT_first-1','EVT_first-2','NA_JKU048',
-  'NA_JKU049','EVT_TSblast-1','ST_TSblast-1-3D',
+  'EVT_first-1','EVT_first-2',
+  'EVT_TSblast-1','ST_TSblast-1-3D',
   'TS_blast-1','EVT_TSblast-2','ST_TSblast-2-3D',
   'TS_blast-2','Stroma_first-1','Stroma_first-2',
   'NA_V1012h','NA_V1018h','NA_V103h',
-  'NA_V106h','NA_V10-D1-6','NA_V10-D2-6',
-  'NA_V10-D3-6','NA_V1-D1-5','NA_V1-D2-5',
-  'NA_V1-D3-5','NA_V712h','NA_V718h',
-  'NA_V73h','NA_V76h', 'NA_WT3h',
-  'NA_WT6h','NA_WT-DMSOD3'  
+  'NA_V106h','NA_V10-D1','NA_V10-D2',
+  'NA_V10-D3','NA_V1-D1','NA_V1-D2',
+  'NA_V1-D3','NA_V7-12h','NA_V7-18h',
+  'NA_V7-3h','NA_V7-6h', 'NA_WT-3h',
+  'NA_WT-6h','NA_WT-DMSO-D3'  
  )
 
-FULL.COL_NAME=paste0(NEW.COL_NAME, '__',COL_NAME )
+
+TYPE=c(
+  'CT',  'EVT', 'CT',
+  'ST', 'ST', 'EVT',
+  'CT', 'ST', 'Stroma',
+  'Stroma', 'NA','CT',
+   'CT','CT','CT',
+  'CT','CT','CT',
+  'CT','CT','CT',
+  'CT','CT','Epi',
+  'Epi','Epi','Stroma',
+   'Stroma','CT','CT',
+  'EVT','EVT',
+  'EVT','ST',
+  'TS','EVT','ST',
+  'TS','Stroma','Stroma',
+  'NA','NA','NA',
+  'NA','NA','NA',
+  'NA','NA','NA',
+  'NA','NA','NA',
+  'NA','NA', 'NA',
+  'NA','NA'  
+ )
+saveRDS(TYPE, 'TYPE.rds')
+FULL.COL_NAME=NEW.COL_NAME #paste0(NEW.COL_NAME, '__',COL_NAME )
 
 FULL.MAT=MAT
 colnames(FULL.MAT)=FULL.COL_NAME
