@@ -34,7 +34,10 @@ DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
 
 pbmc <- ScaleData(pbmc, features = all.genes, vars.to.regress=c('nCount_RNA'))
 pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
-DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
+DimPlot(pbmc, reduction = "pca", pt.size=3, dims=c(1,2)) #+ NoLegend()
+
+pbmc <- RunUMAP(pbmc,  dims = 1:10,min.dist=0.3,n.neighbors=10)
+DimPlot(pbmc, reduction = "umap", pt.size=3, dims=c(1,2)) #+ NoLegend()
 
 
 
