@@ -19,15 +19,76 @@ MAT[1:5,1:5]
 
 
 ##############
+# All samples
 pbmc <- CreateSeuratObject(counts = MAT,  project = "hTSC", min.cells = 0, min.features = 0)
 pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
 
-##
-#Use All Genes 
 all.genes <- rownames(pbmc)
 pbmc <- ScaleData(pbmc, features =all.genes)
 pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
 DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
+
+
+
+#################################
+# Only V1, V7, V10, WT
+
+library(reticulate)
+use_python("/home/toolkit/local/bin/python3",required=T)
+py_config()
+source('/home/zhangfeng/project/EVOL/source/MultiTools.R')
+setwd('/home/zhangfeng/project/hTSC/data/hTSC_paper_RNA_seq/htseq_count')
+
+###
+#Load data
+MAT=read.table('MAT_FULL.NAME.txt',header=T,row.names=1,sep='\t')
+MAT[1:5,1:5]
+TYPE=readRDS('TYPE.rds')
+MAT=MAT[,which(TYPE=='NA')]
+PCGENE=read.table('/home/database/annotation/hg19/Homo_sapiens.GRCh37.75.chr.pc.gene.SYM.bed',sep='\t',header=F)
+MAT=MAT[which(rownames(MAT) %in% PCGENE[,4]),]
+
+pbmc <- CreateSeuratObject(counts = MAT,  project = "hTSC", min.cells = 0, min.features = 0)
+pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
+
+all.genes <- rownames(pbmc)
+pbmc <- ScaleData(pbmc, features =all.genes)
+pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
+DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
+
+VEC=pbmc@reductions$pca@cell.embeddings
+TEXT=str_replace(colnames(pbmc),pattern='NA_','')
+
+plot(VEC)
+text(TEXT, x=VEC[,1],y=VEC[,2], pos=sample(c(1,2,3,4),nrow(VEC),replace=T))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
