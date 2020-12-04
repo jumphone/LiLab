@@ -59,8 +59,10 @@ DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
 VEC=pbmc@reductions$pca@cell.embeddings
 TEXT=str_replace(colnames(pbmc),pattern='NA_','')
 
-plot(VEC)
-text(TEXT, x=VEC[,1],y=VEC[,2], pos=sample(c(1,2,3,4),nrow(VEC),replace=T))
+plot(VEC, pch=16, cex=2, col='grey70',xlim=c(-80,170),ylim=c(-100,80))
+set.seed(8)
+text(TEXT, x=VEC[,1],y=VEC[,2], pos=sample(c(1,2,3,4,2,3,1,4),nrow(VEC),replace=T))
+#text(TEXT, x=VEC[,1],y=VEC[,2], pos=c(1,2,3,4))
 
 
 
