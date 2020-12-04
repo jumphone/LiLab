@@ -64,17 +64,20 @@ set.seed(8)
 text(TEXT, x=VEC[,1],y=VEC[,2], pos=sample(c(1,2,3,4,2,3,1,4),nrow(VEC),replace=T))
 #text(TEXT, x=VEC[,1],y=VEC[,2], pos=c(1,2,3,4))
 
+saveRDS(pbmc, file='pbmc_onlyVWT.rds')
 
+DATA=as.matrix(pbmc@assays$RNA@data)
+################
+COR1=apply(DATA,1, cor, VEC[,1],method='spearman')
+COR1[which(is.na(COR1))]=0
+TOP.COR1=COR1[order(-COR1)][1:100]
+write.table(TOP.COR1,file='TOP.COR1.txt',sep='\t',quote=F,col.names=F,row.names=T)
 
-
-
-
-
-
-
-
-
-
+################
+COR2=apply(DATA,1, cor, VEC[,2],method='spearman')
+COR2[which(is.na(COR2))]=0
+TOP.COR2=COR2[order(-COR2)][1:100]
+write.table(TOP.COR2,file='TOP.COR2.txt',sep='\t',quote=F,col.names=F,row.names=T)
 
 
 
