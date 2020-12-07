@@ -81,231 +81,103 @@ write.table(TOP.COR2,file='TOP.COR2.txt',sep='\t',quote=F,col.names=F,row.names=
 
 
 
+colnames(pbmc)
+'''
+ [1] "NA_WT.ES8P74.D3" "NA_V10.12h"      "NA_V10.18h"      "NA_V10.3h"
+ [5] "NA_V10.6h"       "NA_V10.D1"       "NA_V10.D2"       "NA_V10.D3"
+ [9] "NA_V1.D1"        "NA_V1.D2"        "NA_V1.D3"        "NA_V7.12h"
+[13] "NA_V7.18h"       "NA_V7.3h"        "NA_V7.6h"        "NA_WT.3h"
+[17] "NA_WT.6h"        "NA_WT.DMSO.D3"
 
+'''
+TAG=c('WT.D3','V.12h','V.18h','V.3h',
+      'V.6h','V.D1','V.D2','V.D3',
+      'V.D1','V.D2','V.D3','V.12h',
+       'V.18h','V.3h','V.6h','WT.3h',
+       'WT.6h','WT.D3')
 
+Idents(pbmc)=TAG
+DimPlot(pbmc, reduction = "pca", pt.size=3, label=T) + NoLegend()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-pbmc <- ScaleData(pbmc, features = all.genes, vars.to.regress=c('nCount_RNA'))
-pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
-DimPlot(pbmc, reduction = "pca", pt.size=3, dims=c(1,2)) #+ NoLegend()
-
-pbmc <- RunUMAP(pbmc,  dims = 1:10,min.dist=0.3,n.neighbors=10)
-DimPlot(pbmc, reduction = "umap", pt.size=3, dims=c(1,2)) #+ NoLegend()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#################################################
-#Batch correction
-BATCH=rep('B1',ncol(MAT))
-BATCH[which(Idents(pbmc)=='NA')]='B2'
-COUNT=as.matrix(pbmc@assays$RNA@counts)
-VAR1=apply(COUNT[,which(BATCH=='B1')],1,var)
-VAR2=apply(COUNT[,which(BATCH=='B2')],1,var)
-used_col=which(VAR1*VAR2>0)
-USED.COUNT=COUNT[used_col,]
-MAT=USED.COUNT
-pbmc <- CreateSeuratObject(counts = MAT,  project = "hTSC", min.cells = 0, min.features = 0)
-pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
-###############
 DATA=as.matrix(pbmc@assays$RNA@data)
-C.DATA=.combat(DATA,BATCH)
-C.DATA[which(C.DATA<0)]=0
-###############################
-pbmc@assays$RNA@data=C.DATA
-all.genes <- rownames(pbmc)
-pbmc <- ScaleData(pbmc, features =all.genes)
-pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
-DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
 
+VAR=apply(DATA,1,var)
 
+SORT_VAR=sort(VAR)
 
 
+plot(x=1:length(SORT_VAR),y=SORT_VAR, pch=16,col='grey70', xlab='Index', ylab='VAR')
+used_var=which(SORT_VAR >quantile(SORT_VAR, 0.95))
+points(x=(1:length(SORT_VAR))[used_var], y=SORT_VAR[used_var] , pch=16,col='black')
 
 
+##############################
+S.DATA=as.matrix(pbmc@assays$RNA@scale.data)
+mat=S.DATA[which(rownames(S.DATA) %in% names(used_var)),]
+mat.colname=c('WT.D3','V.12h_r1','V.18h_r1','V.3h_r1',
+      'V.6h_r1','V.D1_r1','V.D2_r1','V.D3_r1',
+      'V.D1_r2','V.D2_r2','V.D3_r2','V.12h_r2',
+       'V.18h_r2','V.3h_r2','V.6h_r2','WT.3h',
+       'WT.6h','WT.D3')
 
+colnames(mat)=mat.colname
 
 
+library('ComplexHeatmap')
+library('circlize')
+library('seriation')
 
+color_fun =colorRamp2(c(-1,-0.5,0,0.5,1 ), c('royalblue3','white','white','white','indianred3'))
+Heatmap(mat,row_title='',name="C",
+        cluster_columns=TRUE, cluster_rows=TRUE,
+	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_names=TRUE, show_row_names=FALSE,
+	      col=color_fun, border = TRUE
+        )
+        
+pdf('Heatmap.pdf',width=5,height=4)
 
+Heatmap(mat,row_title='',name="C",
+        cluster_columns=TRUE, cluster_rows=TRUE,
+	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_names=TRUE, show_row_names=FALSE,
+	      col=color_fun, border = TRUE
+        )
 
+dev.off()
 
 
+#D=dist(mat)
+#H=hclust(D)
+#C=cutree(H,k=5)
 
 
 
 
+HM=Heatmap(mat,row_title='',name="C",
+        cluster_columns=TRUE, cluster_rows=TRUE,
+	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_names=TRUE, show_row_names=FALSE,
+	      col=color_fun, border = TRUE,
+        left_annotation = rowAnnotation(foo = anno_block(gp = gpar(fill = 1:5))),
+        row_km = 5
+        )
 
 
+pdf('Heatmap_anno.pdf',width=5,height=4)
 
+HM=Heatmap(mat,row_title='',name="C",
+        cluster_columns=TRUE, cluster_rows=TRUE,
+	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_names=TRUE, show_row_names=FALSE,
+	      col=color_fun, border = TRUE,
+        left_annotation = rowAnnotation(foo = anno_block(gp = gpar(fill = 1:5))),
+        row_km = 5
+        )
+HM  
+dev.off()
 
 
-##
-#Use Variable Genes
-pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 3000)
-VariableFeaturePlot(pbmc)
-pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), npcs = 10)
-DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
-
-
-write.table(pbmc@meta.data, file='META.txt',row.names=T,col.names=T,quote=F,sep='\t')
-
-
-
-##############
-GRP=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/KEGG_Ribosome.txt',sep='\t')[,1])
-GCC1=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/G1S.txt',sep='\t')[,1])
-GCC2=as.character(read.table('https://raw.githubusercontent.com/jumphone/BEER/master/SUP/G2M.txt',sep='\t')[,1])
-
-
-###################
-COUNT=as.matrix(pbmc@assays$RNA@counts)
-SUM=apply(COUNT, 2,sum)
-SRP=apply(COUNT[which(rownames(COUNT) %in% GRP),],2,sum)/ SUM
-SCC1=apply(COUNT[which(rownames(COUNT) %in% GCC1),],2,sum)/ SUM
-SCC2=apply(COUNT[which(rownames(COUNT) %in% GCC2),],2,sum)/ SUM
-pbmc[['cc1']]=SCC1
-pbmc[['cc2']]=SCC2
-pbmc[['rp']]=SRP
-######################
-
-pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
-all.genes <- rownames(pbmc)
-pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
-#VariableFeaturePlot(pbmc)
-pbmc <- ScaleData(pbmc, features = VariableFeatures(object = pbmc), vars.to.regress=c('cc1','cc2','rp'))
-
-#pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 5000)
-#VariableFeaturePlot(pbmc)
-#pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), npcs = 50)
-pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), npcs = 50)
-
-#ElbowPlot(pbmc, ndims=50)
-#pbmc <- RunUMAP(pbmc, dims = 1:10,min.dist=0.3,n.neighbors=15)
-#DimPlot(pbmc, reduction = "umap", pt.size=3)
-
-DimPlot(pbmc, reduction = "pca",dims=c(1,2), pt.size=3)
-saveRDS(pbmc, file='pbmc.rds')
-###############################################################################
-
-
-DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-############
-pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
-pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
-#VariableFeaturePlot(pbmc)
-all.genes <- rownames(pbmc)
-#pbmc <- ScaleData(pbmc, features = all.genes)
-pbmc <- ScaleData(pbmc, features = all.genes, vars.to.regress=c('cc','rp'))
-#pbmc <- ScaleData(pbmc, features = VariableFeatures(pbmc))
-#pbmc <- RunPCA(pbmc, features = all.genes, npcs = 50)
-pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), npcs = 50)
-#ElbowPlot(pbmc, ndims=50)
-#pbmc <- RunUMAP(pbmc, dims = 1:30,min.dist=0.3,n.neighbors=10)
-#DimPlot(pbmc, reduction = "umap")
+ht = draw(HM)
+tmp=row_dend(ht)
+names(tmp)
