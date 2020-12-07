@@ -181,3 +181,20 @@ dev.off()
 ht = draw(HM)
 tmp=row_dend(ht)
 names(tmp)
+
+
+
+GENE.OUT=c(labels(tmp[[1]]),
+    labels(tmp[[2]]),
+    labels(tmp[[3]]),
+    labels(tmp[[4]]),
+    labels(tmp[[5]])
+	   )
+GENE.OUT.TYPE=c( rep('1',length(labels(tmp[[1]]))),
+                 rep('2',length(labels(tmp[[2]]))),
+                 rep('3',length(labels(tmp[[3]]))),
+                 rep('4',length(labels(tmp[[4]]))),
+                 rep('5',length(labels(tmp[[5]])))
+                     )
+OUT=cbind(GENE.OUT,GENE.OUT.TYPE)
+write.table(OUT,'GENE_5CLUSTER.txt',sep='\t',row.names=F,col.names=F,quote=F)
