@@ -315,10 +315,13 @@ mat.colname=c('WT.D3','V.12h_r1','V.18h_r1','V.3h_r1',
 
 colnames(mat)=mat.colname
 
+r.var=apply(mat,1,var)
+mat=mat[which(r.var>0),]
+
 
 pdf('Heatmap_anno_allgene.pdf',width=5,height=4)
-
-color_fun =colorRamp2(c(-1,-0.5,0,0.5,1 ), c('royalblue3','white','white','white','indianred3'))
+set.seed(123)
+color_fun =colorRamp2(c(-1,0.1,0,0.1,1 ), c('royalblue3','white','white','white','indianred3'))
 HM=Heatmap(mat,row_title='',name="C",
         cluster_columns=TRUE, cluster_rows=TRUE,
 	      show_column_dend = TRUE, show_row_dend = FALSE, 
@@ -329,6 +332,13 @@ HM=Heatmap(mat,row_title='',name="C",
         )
 print(HM)
 dev.off()
+
+
+
+
+
+
+
 
 
 
