@@ -29,6 +29,18 @@ pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
 DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
 
 
+boxplot(pbmc@meta.data$nFeature_RNA ~ pbmc@meta.data$orig.ident)
+
+DATA=as.matrix(pbmc@assays$RNA@data)
+MIN=apply(DATA,1,min)
+
+used.gene=names(which(MIN>0.01))
+pbmc <- ScaleData(pbmc, features =used.gene,vars.to.regress='nCount_RNA')
+pbmc <- RunPCA(pbmc, features = used.gene, npcs = 10)
+DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
+
+
+
 
 #################################
 # Only V1, V7, V10, WT
