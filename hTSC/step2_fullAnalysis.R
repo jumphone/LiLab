@@ -320,13 +320,13 @@ pdf('Heatmap_anno_allgene.pdf',width=5,height=4)
 
 HM=Heatmap(mat,row_title='',name="C",
         cluster_columns=TRUE, cluster_rows=TRUE,
-	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_dend = TRUE, show_row_dend = FALSE, 
 	      show_column_names=TRUE, show_row_names=FALSE,
 	      col=color_fun, border = TRUE,
         left_annotation = rowAnnotation(foo = anno_block(gp = gpar(fill = 1:5))),
         row_km = 5
         )
-HM  
+print(HM)
 dev.off()
 
 
