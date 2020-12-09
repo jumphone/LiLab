@@ -68,6 +68,9 @@ pbmc <- ScaleData(pbmc, features =all.genes)
 pbmc <- RunPCA(pbmc, features = all.genes, npcs = 10)
 DimPlot(pbmc, reduction = "pca", pt.size=3) #+ NoLegend()
 
+
+
+
 VEC=pbmc@reductions$pca@cell.embeddings
 TEXT=str_replace(colnames(pbmc),pattern='NA_','')
 
@@ -116,10 +119,10 @@ DATA=as.matrix(pbmc@assays$RNA@data)
 VAR=apply(DATA,1,var)
 
 SORT_VAR=sort(VAR)
-
+used_var=which(SORT_VAR >quantile(SORT_VAR, 0.95))
 
 plot(x=1:length(SORT_VAR),y=SORT_VAR, pch=16,col='grey70', xlab='Index', ylab='VAR')
-used_var=which(SORT_VAR >quantile(SORT_VAR, 0.95))
+
 points(x=(1:length(SORT_VAR))[used_var], y=SORT_VAR[used_var] , pch=16,col='black')
 
 
@@ -210,3 +213,96 @@ GENE.OUT.TYPE=c( rep('1',length(labels(tmp$'1'))),
                      )
 OUT=cbind(GENE.OUT,GENE.OUT.TYPE)
 write.table(OUT,'GENE_5CLUSTER.txt',sep='\t',row.names=F,col.names=F,quote=F)
+
+
+
+
+
+
+######################
+######################
+
+EXP=as.matrix(pbmc@assays$RNA@data)
+CMAT=cor(EXP, method='spearman')
+TAG=c('WT.D3','V.12h','V.18h','V.3h',
+      'V.6h','V.D1','V.D2','V.D3',
+      'V.D1','V.D2','V.D3','V.12h',
+       'V.18h','V.3h','V.6h','WT.3h',
+       'WT.6h','WT.D3')
+colnames(CMAT)=TAG
+rownames(CMAT)=TAG
+heatmap(CMAT)
+
+
+
+library('ComplexHeatmap')
+library('circlize')
+library('seriation')
+
+color_fun =colorRamp2(c(0.9,0.95,1 ), c('royalblue3','white','indianred3'))
+
+
+Heatmap(CMAT,row_title='',name="C",
+        cluster_columns=TRUE, cluster_rows=TRUE,
+	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_names=TRUE, show_row_names=TRUE,
+	      col=color_fun, border = TRUE
+        )
+pdf('Heatmap_cor_all.pdf',width=5,height=4)
+Heatmap(CMAT,row_title='',name="C",
+        cluster_columns=TRUE, cluster_rows=TRUE,
+	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_names=TRUE, show_row_names=TRUE,
+	      col=color_fun, border = TRUE
+        )
+dev.off()
+
+#####################
+DATA=as.matrix(pbmc@assays$RNA@data)
+VAR=apply(DATA,1,var)
+SORT_VAR=sort(VAR)
+used_var=which(SORT_VAR >quantile(SORT_VAR, 0.95))
+
+
+
+EXP=as.matrix(pbmc@assays$RNA@data)[used_var,]
+CMAT=cor(EXP, method='spearman')
+TAG=c('WT.D3','V.12h','V.18h','V.3h',
+      'V.6h','V.D1','V.D2','V.D3',
+      'V.D1','V.D2','V.D3','V.12h',
+       'V.18h','V.3h','V.6h','WT.3h',
+       'WT.6h','WT.D3')
+colnames(CMAT)=TAG
+rownames(CMAT)=TAG
+heatmap(CMAT)
+
+
+
+library('ComplexHeatmap')
+library('circlize')
+library('seriation')
+
+color_fun =colorRamp2(c(0.85,0.9,0.95,1 ), c('royalblue3','white','white','indianred3'))
+
+
+Heatmap(CMAT,row_title='',name="C",
+        cluster_columns=TRUE, cluster_rows=TRUE,
+	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_names=TRUE, show_row_names=TRUE,
+	      col=color_fun, border = TRUE
+        )
+
+
+pdf('Heatmap_cor_var.pdf',width=5,height=4)
+Heatmap(CMAT,row_title='',name="C",
+        cluster_columns=TRUE, cluster_rows=TRUE,
+	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_names=TRUE, show_row_names=TRUE,
+	      col=color_fun, border = TRUE
+        )
+dev.off()
+
+
+
+
+
