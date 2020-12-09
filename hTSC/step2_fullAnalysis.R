@@ -304,5 +304,30 @@ dev.off()
 
 
 
+########################
+S.DATA=as.matrix(pbmc@assays$RNA@scale.data)
+mat=S.DATA
+mat.colname=c('WT.D3','V.12h_r1','V.18h_r1','V.3h_r1',
+      'V.6h_r1','V.D1_r1','V.D2_r1','V.D3_r1',
+      'V.D1_r2','V.D2_r2','V.D3_r2','V.12h_r2',
+       'V.18h_r2','V.3h_r2','V.6h_r2','WT.3h',
+       'WT.6h','WT.D3')
+
+colnames(mat)=mat.colname
+
+
+pdf('Heatmap_anno_allgene.pdf',width=5,height=4)
+
+HM=Heatmap(mat,row_title='',name="C",
+        cluster_columns=TRUE, cluster_rows=TRUE,
+	      show_column_dend = TRUE, show_row_dend = TRUE, 
+	      show_column_names=TRUE, show_row_names=FALSE,
+	      col=color_fun, border = TRUE,
+        left_annotation = rowAnnotation(foo = anno_block(gp = gpar(fill = 1:5))),
+        row_km = 5
+        )
+HM  
+dev.off()
+
 
 
