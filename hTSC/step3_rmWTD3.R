@@ -159,7 +159,7 @@ Heatmap(o.mat,row_title='',name="Exp",
         )       
        
 
-pdf('./RESULT/Heatmap_trend.pdf',width=5,height=4)
+pdf('./RESULT/Heatmap_trend.pdf',width=3,height=8)
 
 ha = HeatmapAnnotation( gap = unit(1, "mm") ,
                        C1 = anno_lines(C1, smooth = TRUE, add_points = TRUE, gp = gpar(lwd=2), ylim = c(-2.5, 2.5)), 
@@ -180,7 +180,7 @@ HM=Heatmap(o.mat,row_title='',name="Exp",
         bottom_annotation=ha
         ) 
         
-draw(HM, heatmap_legend_side = "left", annotation_legend_side = "bottom")
+draw(HM, heatmap_legend_side = "top", annotation_legend_side = "bottom")
 
 dev.off()          
        
