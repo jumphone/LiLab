@@ -45,6 +45,7 @@ write.table(all_res,'OUTPUT_DIFF_TCMTEM.txt',row.names=T,col.names=T,quote=F,sep
 ########################################################################################
 
 
+setwd('E:/Lilab/Project/Fengqin')
 
 
 
@@ -64,8 +65,8 @@ DIFF_TCMTEM_PADJ=DIFF_TCMTEM[,19]
 DIFF_CD73_PADJ=DIFF_CD73[,13]
 
 
-DIFF_TCMTEM_RPM_TCM=apply(DIFF_TCMTEM[,2:4],1,mean)
-DIFF_TCMTEM_RPM_TEM=apply(DIFF_TCMTEM[,5:7],1,mean)
+DIFF_TCMTEM_RPM_TCM=apply(DIFF_TCMTEM[,8:10],1,mean)
+DIFF_TCMTEM_RPM_TEM=apply(DIFF_TCMTEM[,11:13],1,mean)
 
 DIFF_TCMTEM_TCMdivTEM = DIFF_TCMTEM_RPM_TCM / DIFF_TCMTEM_RPM_TEM
 DIFF_TCMTEM_TEMdivTCM = DIFF_TCMTEM_RPM_TEM / DIFF_TCMTEM_RPM_TCM 
