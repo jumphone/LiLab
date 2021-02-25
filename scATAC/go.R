@@ -101,6 +101,7 @@ pbmc <- subset(
 pbmc
 
 
+
 library(JASPAR2020)
 library(TFBSTools)
 library(BSgenome.Hsapiens.UCSC.hg19)
@@ -117,9 +118,13 @@ pbmc <- AddMotifs(
   pfm = pfm
 )
 
+saveRDS(pbmc,file='pbmc.rds')
+
+
 
 pbmc_chromvar=RunChromVAR(object = pbmc[["peaks"]], genome = BSgenome.Hsapiens.UCSC.hg19)
 
+saveRDS(pbmc_chromvar,file='pbmc_chromvar.rds')
 
 
 
