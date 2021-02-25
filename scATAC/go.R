@@ -1,6 +1,23 @@
 setwd('/home/database/data/TMP_scATAC')
 
 
+ ‘GenomeInfoDb’, ‘GenomicRanges’, ‘IRanges’, ‘Rsamtools’, ‘S4Vectors’, ‘BiocGenerics’, ‘Biostrings’, ‘ggbio’, ‘biovizBase’, ‘AnnotationFilter’
+
+BiocManager::install("GenomeInfoDb")
+BiocManager::install("GenomicRanges")
+BiocManager::install("IRanges")
+
+BiocManager::install("Rsamtools")
+BiocManager::install("S4Vectors")
+BiocManager::install("BiocGenerics")
+
+BiocManager::install("Biostrings")
+BiocManager::install("ggbio")
+BiocManager::install("biovizBase")
+BiocManager::install("AnnotationFilter")
+
+
+
 library(reticulate)
 use_python("/home/toolkit/local/bin/python3",required=T)
 py_config()
