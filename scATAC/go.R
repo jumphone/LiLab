@@ -75,8 +75,6 @@ genome(annotations) <- "hg19"
 Annotation(pbmc) <- annotations
 
 
-
-
 # compute nucleosome signal score per cell
 pbmc <- NucleosomeSignal(object = pbmc)
 
