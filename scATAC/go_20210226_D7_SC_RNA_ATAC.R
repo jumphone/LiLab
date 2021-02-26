@@ -106,7 +106,7 @@ VlnPlot(
 
 a_pbmc <- subset(
   x = a_pbmc,
-  subset = peak_region_fragments > 1000 &
+  subset = peak_region_fragments > 3000 &
     peak_region_fragments < 20000 &
     pct_reads_in_peaks > 15 &
     blacklist_ratio < 0.05 &
@@ -119,6 +119,35 @@ saveRDS(a_pbmc, file='a_pbmc_afterQC.rds')
 
 #######################################
 
+a_pbmc <- RunTFIDF(a_pbmc)
+a_pbmc <- FindTopFeatures(a_pbmc, min.cutoff = 'q0')
+a_pbmc <- RunSVD(a_pbmc)
+
+DepthCor(a_pbmc)
+
+a_pbmc <- RunUMAP(object = a_pbmc, reduction = 'lsi', dims = 2:30)
+DimPlot(object = a_pbmc, label = TRUE) + NoLegend()
+
+saveRDS(a_pbmc, file='a_pbmc_afterUMAP.rds')
+
+###################################
+
+
+
+pfm <- getMatrixSet(
+  x = JASPAR2020,
+  opts = list(species = 9606, all_versions = FALSE)
+)
+
+# add motif information
+a_pbmc <- AddMotifs(
+  object = a_pbmc,
+  genome = BSgenome.Hsapiens.UCSC.hg38,
+  pfm = pfm
+)
+
+
+a_chromvar=RunChromVAR(object = a_pbmc[["peaks"]], genome = BSgenome.Hsapiens.UCSC.hg38)
 
 
 
@@ -126,6 +155,17 @@ saveRDS(a_pbmc, file='a_pbmc_afterQC.rds')
 
 
 
+
+
+
+
+
+
+
+
+
+a_pbmc <- FindNeighbors(object = a_pbmc, reduction = 'lsi', dims = 2:30)
+a_pbmc <- FindClusters(object = a_pbmc, verbose = FALSE, algorithm = 3)
 
 
 
