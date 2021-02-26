@@ -152,6 +152,8 @@ a_chromvar=RunChromVAR(object = a_pbmc[["peaks"]], genome = BSgenome.Hsapiens.UC
 
 
 
+saveRDS(a_chromvar, file='a_chromvar.rds')
+
 
 
 
