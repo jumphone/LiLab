@@ -1,6 +1,7 @@
 BiocManager::install("EnsDb.Hsapiens.v86")
 BiocManager::install("BSgenome.Hsapiens.UCSC.hg38")
 
+remotes::install_github("cole-trapnell-lab/cicero-release", ref = "monocle3")
 
 /home/toolkit/tools/R4.0.3/bin/R
 
@@ -155,9 +156,12 @@ a_chromvar=RunChromVAR(object = a_pbmc[["peaks"]], genome = BSgenome.Hsapiens.UC
 saveRDS(a_chromvar, file='a_chromvar.rds')
 
 
+##########################
 
 
-
+library(SeuratWrappers)
+library(ggplot2)
+library(cicero)
 
 
 
