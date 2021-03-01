@@ -203,11 +203,11 @@ conns <- run_cicero(bone.cicero, genomic_coords = genome.df, sample_num = 100)
 head(conns)
 
 
-ccans <- generate_ccans(conns)
+#ccans <- generate_ccans(conns)
 
-links <- ConnectionsToLinks(conns = conns, ccans = ccans)
+links <- ConnectionsToLinks(conns = conns, ccans = NULL)
 Links(a_pbmc) <- links
-CoveragePlot(bone, region = "chr1-40189344-40252549")
+CoveragePlot(a_pbmc, region = "chr1-40189344-40252549")
 
 
 
