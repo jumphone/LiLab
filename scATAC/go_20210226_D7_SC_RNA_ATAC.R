@@ -159,9 +159,72 @@ saveRDS(a_chromvar, file='a_chromvar.rds')
 ##########################
 
 
+
+
+
+/home/toolkit/tools/R4.0.3/bin/R
+
+
+#######################################
+setwd("/home/database/data/D7_SC_RNA_ATAC")
+
+library(reticulate)
+use_python("/home/toolkit/local/bin/python3",required=T)
+py_config()
+
+
+library(Signac)
+library(Seurat)
+library(GenomeInfoDb)
+library(EnsDb.Hsapiens.v86)
+library(ggplot2)
+library(patchwork)
+set.seed(1234)
+
+
 library(SeuratWrappers)
 library(ggplot2)
 library(cicero)
+
+
+
+a_pbmc=readRDS(file='a_pbmc_afterUMAP.rds')
+
+
+bone.cds <- as.cell_data_set(x = a_pbmc)
+bone.cicero <- make_cicero_cds(bone.cds, reduced_coordinates = reducedDims(bone.cds)$UMAP)
+
+genome <- seqlengths(a_pbmc)
+genome <- genome[1]
+
+genome.df <- data.frame("chr" = names(genome), "length" = genome)
+conns <- run_cicero(bone.cicero, genomic_coords = genome.df, sample_num = 100)
+
+head(conns)
+
+
+ccans <- generate_ccans(conns)
+
+links <- ConnectionsToLinks(conns = conns, ccans = ccans)
+Links(a_pbmc) <- links
+CoveragePlot(bone, region = "chr1-40189344-40252549")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
