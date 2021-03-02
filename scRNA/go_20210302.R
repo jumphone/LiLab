@@ -63,6 +63,64 @@ MAT=cbind(MAT1,MAT2)
 TAG=c(rep('TACSTD2',ncol(MAT1)),rep('DLK1',ncol(MAT2)))
 
 
+G1=as.character(read.table('geneset/GO_EXTRACELLULAR_MATRIX_STRUCTURAL_CONSTITUENT.txt',sep='\t',row.names=NULL,header=T)[,1])
+G1=G1[2:length(G1)]
+G2=as.character(read.table('geneset/GO_CONNECTIVE_TISSUE_DEVELOPMENT.txt',sep='\t',row.names=NULL,header=T)[,1])
+G2=G2[2:length(G2)]
+G3=as.character(read.table('geneset/GO_COLLAGEN_TRIMER.txt',sep='\t',row.names=NULL,header=T)[,1])
+G3=G3[2:length(G3)]
+
+G4=as.character(read.table('geneset/GO_EPIDERMIS_DEVELOPMENT.txt',sep='\t',row.names=NULL,header=T)[,1])
+G4=G4[2:length(G4)]
+G5=as.character(read.table('geneset/GO_CELL_CELL_JUNCTION.txt',sep='\t',row.names=NULL,header=T)[,1])
+G5=G5[2:length(G5)]
+G6=as.character(read.table('geneset/GO_SKIN_DEVELOPMENT.txt',sep='\t',row.names=NULL,header=T)[,1])
+G6=G6[2:length(G6)]
+
+
+
+
+mat=MAT[which(rownames(MAT)%in% G6),]
+o.mat=t(apply(mat,1,scale))
+rownames(o.mat)=rownames(mat)
+colnames(o.mat)=colnames(mat)
+
+library('ComplexHeatmap')
+library('circlize')
+library('seriation')
+
+color_fun_3 =colorRamp2(c(-1,-0.5,0,0.5,1 ), c('royalblue3','white','white','white','indianred3'))
+
+############################################
+ha_top = HeatmapAnnotation(  
+     GROUP = TAG,
+     col=list(GROUP=c('TACSTD2'='blue','DLK1'='red'))
+     )
+
+Heatmap(o.mat,row_title='',name="C",
+        cluster_columns=FALSE, cluster_rows=FALSE,
+	      show_column_dend = FALSE, show_row_dend = FALSE, 
+	      show_column_names=FALSE, show_row_names=FALSE,
+	      col=color_fun_3, border = TRUE,
+        top_annotation = ha_top
+	      )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
