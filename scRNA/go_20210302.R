@@ -56,6 +56,12 @@ write.table(DLK1.markers,file='DLK1.markers.txt',sep='\t',row.names=T,col.names=
 
 
 
+MAT1=EXP[,which(CLUSTER==1)]
+MAT2=EXP[,which(CLUSTER==2)]
+
+MAT=cbind(MAT1,MAT2)
+TAG=c(rep('TACSTD2',ncol(MAT1)),rep('DLK1',ncol(MAT2)))
+
 
 
 
