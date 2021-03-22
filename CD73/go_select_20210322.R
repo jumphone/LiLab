@@ -18,7 +18,7 @@ CD73NEG=rownames(MAT)[which( MAT$NEGdivPOS > FCUT & MAT$CD73_PADJ < PCUT )]
 library(VennDiagram)
 
 x=list(TEM=TEM, TCM=TCM, CD73POS=CD73POS, CD73NEG=CD73NEG)
-venn.diagram(x, filename='VENN_FOLD1.5.tiff', height = 3000, width = 3000, resolution =
+venn.diagram(x, filename='VENN_FOLD_1.5.tiff', height = 3000, width = 3000, resolution =
     500, imagetype = "tiff", units = "px", compression =
     "lzw", na = "stop", main = NULL, sub = NULL, main.pos
     = c(0.5, 1.05), main.fontface = "plain",
@@ -52,7 +52,7 @@ CD73NEG=rownames(MAT)[which( MAT$NEGdivPOS > FCUT & MAT$CD73_PADJ < PCUT )]
 library(VennDiagram)
 
 x=list(TEM=TEM, TCM=TCM, CD73POS=CD73POS, CD73NEG=CD73NEG)
-venn.diagram(x, filename='VENN_FOLD2.tiff', height = 3000, width = 3000, resolution =
+venn.diagram(x, filename='VENN_FOLD_2.tiff', height = 3000, width = 3000, resolution =
     500, imagetype = "tiff", units = "px", compression =
     "lzw", na = "stop", main = NULL, sub = NULL, main.pos
     = c(0.5, 1.05), main.fontface = "plain",
@@ -86,7 +86,7 @@ CD73NEG=rownames(MAT)[which( MAT$NEGdivPOS > FCUT & MAT$CD73_PADJ < PCUT )]
 library(VennDiagram)
 
 x=list(TEM=TEM, TCM=TCM, CD73POS=CD73POS, CD73NEG=CD73NEG)
-venn.diagram(x, filename='VENN_FOLD1.2.tiff', height = 3000, width = 3000, resolution =
+venn.diagram(x, filename='VENN_FOLD_1.2.tiff', height = 3000, width = 3000, resolution =
     500, imagetype = "tiff", units = "px", compression =
     "lzw", na = "stop", main = NULL, sub = NULL, main.pos
     = c(0.5, 1.05), main.fontface = "plain",
