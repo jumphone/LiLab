@@ -1,11 +1,18 @@
-setwd('C:/Users/cchmc/Desktop/Lingjie')
+#setwd('C:/Users/cchmc/Desktop/Lingjie')
 
-MAT=read.table('DATA.txt',header=T,row.names=1,sep='\t')
+#MAT=read.table('DATA.txt',header=T,row.names=1,sep='\t')
 
-
+setwd('/home/zhangfeng/project/CD73')
+MAT=read.table('OUTPUT_COMPARE.txt',header=T,row.names=1,sep='\t')
 
 FCUT=1.5
 PCUT=0.05
+
+#TEM=rownames(MAT)[which( MAT$TEMdivTCM > FCUT & MAT$TCMTEM_PADJ< PCUT )]
+#TCM=rownames(MAT)[which( MAT$TCMdivTEM > FCUT & MAT$TCMTEM_PADJ< PCUT )]
+
+#CD73POS=rownames(MAT)[which( MAT$POSdivNEG > FCUT & MAT$CD73_PADJ < PCUT )]
+#CD73NEG=rownames(MAT)[which( MAT$NEGdivPOS > FCUT & MAT$CD73_PADJ < PCUT )]
 
 TEM=rownames(MAT)[which( MAT$TEMdivTCM > FCUT & MAT$TCMTEM_PADJ< PCUT )]
 TCM=rownames(MAT)[which( MAT$TCMdivTEM > FCUT & MAT$TCMTEM_PADJ< PCUT )]
