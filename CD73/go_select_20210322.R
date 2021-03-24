@@ -14,11 +14,11 @@ PCUT=0.05
 #CD73POS=rownames(MAT)[which( MAT$POSdivNEG > FCUT & MAT$CD73_PADJ < PCUT )]
 #CD73NEG=rownames(MAT)[which( MAT$NEGdivPOS > FCUT & MAT$CD73_PADJ < PCUT )]
 
-TEM=rownames(MAT)[which( MAT$TEMdivTCM > FCUT & MAT$TCMTEM_PADJ< PCUT )]
-TCM=rownames(MAT)[which( MAT$TCMdivTEM > FCUT & MAT$TCMTEM_PADJ< PCUT )]
+TEM=rownames(MAT)[which( MAT$TEMdivTCM > FCUT & MAT$TCMTEM_PVALUE< PCUT )]
+TCM=rownames(MAT)[which( MAT$TCMdivTEM > FCUT & MAT$TCMTEM_PVALUE< PCUT )]
 
-CD73POS=rownames(MAT)[which( MAT$POSdivNEG > FCUT & MAT$CD73_PADJ < PCUT )]
-CD73NEG=rownames(MAT)[which( MAT$NEGdivPOS > FCUT & MAT$CD73_PADJ < PCUT )]
+CD73POS=rownames(MAT)[which( MAT$POSdivNEG > FCUT & MAT$CD73_PVALUE < PCUT )]
+CD73NEG=rownames(MAT)[which( MAT$NEGdivPOS > FCUT & MAT$CD73_PVALUE < PCUT )]
 
 
 #install.packages("VennDiagram")
