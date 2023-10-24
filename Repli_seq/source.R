@@ -18,7 +18,11 @@
     ####################
     DDD=COL_INDEX - median(COL_INDEX)
     WWW=  10 ** abs(DDD) * sign(DDD)
-    SCORE1 = .norm1(TMP %*% WWW )*0.99
+    ####################
+    TMP_POS=TMP
+    TMP_POS[which(TMP<0)]=0
+    SCORE1 = .norm1(TMP_POS %*% WWW )*0.99
+    ####################
     SCORE2 = TMP_FLAG %*% COL_INDEX
     SCORE = SCORE1 + SCORE2
     SPLIT = as.integer(SCORE)
