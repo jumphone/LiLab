@@ -6,7 +6,7 @@
 # https://github.com/4dn-dcic/pairix/blob/master/util/bam2pairs/README.md
 
 RESOLUTION=10000
-CHR_SIZE=
+CHR_SIZE=/home/database/annotation/hg19/hg19_pure.chrom.sizes
 INPUT_BAM=
 OUTPUT_PREFIX=
 
