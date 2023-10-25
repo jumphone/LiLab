@@ -1,5 +1,16 @@
 
-.stepClst<-function(MAT){
+
+.norm1 <- function(x){
+    y=(x-min(x))/(max(x)-min(x))
+    y[which(is.na(y))]=0
+    return(y)
+    }
+
+
+
+
+
+.stepClst <- function(MAT){
     MAT=MAT
     ######################
     print('scaling...')
