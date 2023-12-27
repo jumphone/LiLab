@@ -10,7 +10,7 @@ OUT=/home/database/pipeline/RIC/output
 ########################################################################
 mkdir $OUT
 
-STAR=/home/database/pipeline/RIC/STAR-2.5.4b/bin/Linux_x86_64/STAR
+STAR=/home/database/pipeline/RIC/STAR-2.5.2b/bin/Linux_x86_64/STAR
 Trimmomatic=/home/database/pipeline/RIC/Trimmomatic-0.36/trimmomatic-0.36.jar
 rRNA=/home/database/reference/rRNA_star
 GENOME=/home/database/reference/hg19_star
