@@ -18,9 +18,7 @@ RICpipe=/home/database/pipeline/RIC/RICpipe
 
 GENE_BED=/home/database/pipeline/RIC/data/gencode.v19.annotation.bed
 GENE_JUNCTION_BEDPE=/home/database/pipeline/RIC/data/gencode.v19.annotation.bed.junction.bedpe
-minimum_fragment_size=100
-
-
+minimum_fragment_size=150
 java -jar $Trimmomatic PE -phred33 -threads 10 $R1 $R2 $OUT\/read1.clean.pair.fq $OUT\/read1.clean.unpair.fq $OUT\/read2.clean.pair.fq $OUT\/read2.clean.unpair.fq ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:7:8:true LEADING:25 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:30
 
 perl $RICpipe\/step0.remove_PCR_duplicates/remove_PCR_duplicates.pl $OUT\/read1.clean.pair.fq $OUT\/read2.clean.pair.fq $OUT\/read1.clean.unpair.fq $OUT\/read2.clean.unpair.fq $OUT > $OUT\/run_step0.sh;cd $OUT;sh run_step0.sh
@@ -51,8 +49,26 @@ $STAR --runMode alignReads --genomeDir $GENOME --readFilesIn $OUT\/read2_torRNA_
 perl $RICpipe\/step1.collect_pair_tags/collect_pair_tags.pl $OUT\/read1_toGenomeAligned.out.sam $OUT\/read2_toGenomeAligned.out.sam $OUT\/read1_toGenomeChimeric.out.sam $OUT\/read2_toGenomeChimeric.out.sam 10 $OUT\/collect_pair_tag > $OUT\/run_step1.sh;cd $OUT;sh run_step1.sh
 
 perl $RICpipe\/step2.separate_intra_inter_molecular/separate_intra_inter.pl $OUT\/collect_pair_tag.interaction.sam $GENE_BED > $OUT\/run_step2.sh;cd $OUT;sh run_step2.sh
+!
 
 perl $RICpipe\/step3.category_intra_reads/category_intra_reads.pl $OUT\/collect_pair_tag.interaction.sam  $minimum_fragment_size $GENE_BED $GENE_JUNCTION_BEDPE > $OUT\/run_step3.sh;cd $OUT;sh run_step3.sh
+
+cp $RICpipe\/lilab_step01_sam2bedpe.sh $OUT
+cp $RICpipe\/lilab_step02_statlen.R $OUT
+
+cd $OUT; sh lilab_step01_sam2bedpe.sh
+cd $OUT; Rscript lilab_step02_statlen.R
+
+
+
+
+
+
+
+
+
+
+
 
 
 
