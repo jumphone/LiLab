@@ -17,7 +17,6 @@ RSCR=/home/database/download/R-3.1.2/bin/Rscript
 cd $PIQ_PATH; $RSCR pwmmatch.exact.r common.r  pwms/jaspar_select.txt 1 ./motif.matches/
 cd $PIQ_PATH; $RSCR pwmmatch.exact.r common.r  pwms/jaspar_select.txt 2 ./motif.matches/
 
-
 ###################################
 # step03. use PIQ to pre-process your BAM file
 
@@ -41,6 +40,7 @@ RSCR=/home/database/download/R-3.1.2/bin/Rscript
 BAM=/home/database/tmp/tmp.bam
 OUTPUT=/home/database/tmp/tmp.bam.PIQ
 
+###########
 TAG=TFAP2C
 NUM=1
 ###########
@@ -49,6 +49,14 @@ OUT=$OUTPUT\/$TAG\.PIQ.OUT
 mkdir $OUT
 cd $PIQ_PATH; $RSCR pertf.r common.r ./motif.matches/  $TMP  $OUT  $OUTPUT\/BAM.RData  $NUM
 
+###########
+TAG=TP63
+NUM=2
+###########
+TMP=$OUTPUT\/$TAG\.PIQ.TMP
+OUT=$OUTPUT\/$TAG\.PIQ.OUT
+mkdir $OUT
+cd $PIQ_PATH; $RSCR pertf.r common.r ./motif.matches/  $TMP  $OUT  $OUTPUT\/BAM.RData  $NUM
 
 
 
