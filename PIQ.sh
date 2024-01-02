@@ -1,22 +1,56 @@
+# Reference genome must be hg19 !!!
 
-PIQ_PATH=/home/database/download/thashim-piq-single-0e1036763bcc/
+############################################################
+# step01. copy PIQ folder to your path
+OLD_PATH=/home/database/download/thashim-piq-single-0e1036763bcc/
+PIQ_PATH=/home/database/tmp/PIQ
+
+cp -r $OLD_PATH $PIQ_PATH
+
+
+####################################
+# step02. generate motif Rdata
+
+PIQ_PATH=/home/database/tmp/PIQ
 RSCR=/home/database/download/R-3.1.2/bin/Rscript
 
 cd $PIQ_PATH; $RSCR pwmmatch.exact.r common.r  pwms/jaspar_select.txt 1 ./motif.matches/
 cd $PIQ_PATH; $RSCR pwmmatch.exact.r common.r  pwms/jaspar_select.txt 2 ./motif.matches/
-cd $PIQ_PATH; $RSCR pwmmatch.exact.r common.r  pwms/jaspar_select.txt 3 ./motif.matches/
-cd $PIQ_PATH; $RSCR pwmmatch.exact.r common.r  pwms/jaspar_select.txt 4 ./motif.matches/
 
 
-#cd $PIQ_PATH; $RSCR pwmmatch.exact.r common.r  pwms/jaspar_select.txt 5 ./motif.matches/
+###################################
+# step03. use PIQ to pre-process your BAM file
+
+PIQ_PATH=/home/database/tmp/PIQ
+RSCR=/home/database/download/R-3.1.2/bin/Rscript
+
+BAM=/home/database/tmp/tmp.bam
+OUTPUT=/home/database/tmp/tmp.bam.PIQ
+
+mkdir $OUTPUT
+
+cd $PIQ_PATH; $RSCR pairedbam2rdata.r common.r $OUTPUT\/BAM.RData $BAM 
 
 
-:<<!
-BAM=/home/database/data/ATAC_CLL/X101SC21013172-Z01-J005/1.rawdata/OUTPUT_LOG/TROP2_Hi.bam
-cd $PIQ_PATH; nohup $RSCR pairedbam2rdata.r common.r $BAM\.PIQ.RData $BAM &
+#####################################
+# step04. run PIQ
 
-BAM=/home/database/data/ATAC_CLL/X101SC21013172-Z01-J005/1.rawdata/OUTPUT_LOG/TROP2.bam
-cd $PIQ_PATH; nohup $RSCR pairedbam2rdata.r common.r $BAM\.PIQ.RData $BAM &
-!
+PIQ_PATH=/home/database/tmp/PIQ
+RSCR=/home/database/download/R-3.1.2/bin/Rscript
+
+BAM=/home/database/tmp/tmp.bam
+OUTPUT=/home/database/tmp/tmp.bam.PIQ
+
+TAG=TFAP2C
+NUM=1
+###########
+TMP=$OUTPUT\/$TAG\.PIQ.TMP
+OUT=$OUTPUT\/$TAG\.PIQ.OUT
+mkdir $OUT
+cd $PIQ_PATH; $RSCR pertf.r common.r ./motif.matches/  $TMP  $OUT  $OUTPUT\/BAM.RData  $NUM
+
+
+
+
 
 
